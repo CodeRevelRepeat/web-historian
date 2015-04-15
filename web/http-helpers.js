@@ -11,6 +11,18 @@ exports.headers = headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
+
+
+  fs.readFile(asset, function (err, data) {
+    if (err){
+      sendResponse(res, undefined, 404); //come back later
+      return;
+    }
+    // console.log(data);
+    callback(data);
+  });
+
+
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
 };
@@ -18,3 +30,16 @@ exports.serveAssets = function(res, asset, callback) {
 
 
 // As you progress, keep thinking about what helper functions you can put here!
+
+exports.sendResponse = sendResponse = function(response, data, statusCode){
+  statusCode = statusCode || 200;
+  response.writeHead(statusCode, headers);
+  response.end(data);
+};
+
+
+
+
+
+
+
