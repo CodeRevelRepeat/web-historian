@@ -21,6 +21,4 @@ module.exports = function () {
     // We use fs.mkdirSync to create the folder
     fs.mkdirSync("./archives/sites");
   }
-
-  archive.readListOfUrls();
 };
