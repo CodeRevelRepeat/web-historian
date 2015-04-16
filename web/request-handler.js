@@ -14,6 +14,7 @@ var mimeTypes = {
 var actions = {
   'GET': function(request, response){
       var pathname = urlParser.parse(request.url).pathname;
+      console.log('pathname:', pathname);
       var baseFolder = '';
 
       if(pathname === '/' || pathname === "/index.html" ||
@@ -22,16 +23,11 @@ var actions = {
           pathname = '/index.html';
         }
         baseFolder = archive.paths['siteAssets'];
-
-      }
-      // else if (archive.isUrlInList(pathname.slice(1))) {
-      //   baseFolder = archive.paths.archivedSites;
-      // }
-      else {
+      } else {
         baseFolder = archive.paths['archivedSites'];
       }
 
-      httpHelpers.serveAssets(response, baseFolder + pathname, function(data){
+      httpHelpers.serveAssets(response, baseFolder + '/' + path.basename(pathname), function(data){
         var headers = {'Content-Type': 'text/html'};
         if (mimeTypes[path.extname(pathname)]) {
           headers['Content-Type'] = mimeTypes[path.extname(pathname)];
@@ -50,6 +46,9 @@ var actions = {
 
           archive.addUrlToList(url);
           var redirect = "./loading.html";
+          if(archive.isURLArchived(url)){
+            redirect =  '../archives/sites/' + url;
+          }
           var redirectHeader = {
             'Location': redirect
           };
