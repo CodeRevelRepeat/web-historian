@@ -43,7 +43,8 @@ exports.isUrlInList = function(url){
     return _.contains(urlList, url);
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(url){
+  urlList.push(url);
 };
 
 exports.isURLArchived = function(){

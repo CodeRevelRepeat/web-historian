@@ -8,29 +8,7 @@ var httpHelpers = require('./http-helpers');
 // HINT:It has to do with what's in .gitignore
 initialize();
 
-
-var routes = {
-  "/" : handler.handleRequest
-  // ...
-};
-
-
-
-var server = http.createServer(function(request, response){
-  console.log("Serving request type " + request.method + " for url " + request.url);
-
-  var parts = urlParser.parse(request.url);
-  var route = routes[parts.pathname];
-
-  if( route ){
-    route(request, response);
-  } else {
-    httpHelpers.sendResponse(response, "Not Found", 404);
-  }
-});
-
-
-
+var server = http.createServer(handler.handleRequest);
 
 var port = 8080;
 var ip = "127.0.0.1";

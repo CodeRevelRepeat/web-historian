@@ -11,9 +11,8 @@ var actions = {
       var pathname = urlParser.parse(request.url).pathname;
       var baseFolder = '';
 
-      console.log('requesting index');
       if(pathname === '/' || pathname === "/index.html" ||
-        pathname === '/loading.html' || pathname === 'styles.css'){
+        pathname === '/loading.html' || pathname === '/styles.css'){
           if(pathname === '/'){
             pathname = '/index.html';
           }
@@ -32,14 +31,19 @@ var actions = {
         httpHelpers.sendResponse(response, data, 200);
       });
     }
-  // ,
-  // 'POST': function(request, response){
-  //   utils.collectData(request, function(message){
-  //     message.objectId = ++objectId;
-  //     messages.push(message);
-  //     utils.sendResponse(response, {objectId: 1}, 201);
-  //   });
-  // },
+  ,
+  'POST': function(request, response){
+    var pathname = urlParser.parse(request.url).pathname;
+    if (pathname === '/') {
+      httpHelpers.collectData(request, function(data){
+        archive.appendToFile(archive.paths.list, data, function() {
+          archive.addUrlToList(request._postData.url);
+          console.log('urlList',archive.urlList);
+          httpHelpers.sendResponse(response, 'DONE', 302);
+        });
+      });
+    }
+  },
   // 'OPTIONS': function(request, response){
   //   utils.sendResponse(response);
   // }

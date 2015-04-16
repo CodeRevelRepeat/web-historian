@@ -35,8 +35,20 @@ exports.sendResponse = sendResponse = function(response, data, statusCode){
   response.end(data);
 };
 
+exports.collectData = function(request, callback){
+  var data = "";
+  request.on('data', function(chunk){
+    data += chunk;
+  });
+  request.on('end', function(){
+    //Left off here.  need to fix.
+    callback.call(this, data);
+  });
+};
 
-
+exports.appendToFile = function(filePath, data, callback) {
+  fs.appendFile(filePath, data + '\n', callback);
+};
 
 
 
