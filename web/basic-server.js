@@ -23,6 +23,7 @@ var server = http.createServer(function(request, response){
 
   var parts = urlParser.parse(request.url);
   var route = routes[parts.pathname];
+
   if( route ){
     route(request, response);
   } else {

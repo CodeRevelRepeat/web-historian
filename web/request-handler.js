@@ -1,12 +1,28 @@
 var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers');
+var urlParser = require('url');
+
 // require more modules/folders here!
 
 
 var actions = {
   'GET': function(request, response){
-      httpHelpers.serveAssets(response, path.join(__dirname, '/public/index.html'), function(data){
+      var pathname = urlParser.parse(request.url).pathname;
+      var baseFolder = '';
+      archive.readListOfUrls();
+      console.log('pathname', pathname);
+      console.log('archive.isUrlInList',archive.isUrlInList(pathname.slice(1)));
+      console.log('url list', archive.urlList);
+
+      if(pathname === '/'){
+        baseFolder = archive.paths['siteAssets'];
+        pathname = '/index.html';
+      } else if (archive.isUrlInList(pathname.slice(1))) {
+        baseFolder = archive.paths.archivedSites;
+      }
+      console.log('baseFolder', baseFolder);
+      httpHelpers.serveAssets(response, baseFolder + pathname, function(data){
 
       httpHelpers.sendResponse(response, data, 200);
     });
