@@ -29,10 +29,9 @@ exports.serveAssets = function(res, asset, callback) {
 
 // As you progress, keep thinking about what helper functions you can put here!
 
-exports.sendResponse = sendResponse = function(response, data, statusCode){
+exports.sendResponse = sendResponse = function(response, data, statusCode, headers){
   statusCode = statusCode || 200;
-  console.log('current data:', data);
-  console.log('current headers:', headers);
+  headers = headers || exports.headers;
   response.writeHead(statusCode, headers);
   response.end(data);
 };

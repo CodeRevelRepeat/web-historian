@@ -32,13 +32,11 @@ var actions = {
       }
 
       httpHelpers.serveAssets(response, baseFolder + pathname, function(data){
-        console.log('in callback of serveAssets');
-        console.log('pathname:', pathname);
+        var headers = {'Content-Type': 'text/html'};
         if (mimeTypes[path.extname(pathname)]) {
-          console.log('found mimeType');
-          httpHelpers.headers['Content-Type'] = mimeTypes[path.extname(pathname)];
+          headers['Content-Type'] = mimeTypes[path.extname(pathname)];
         }
-        httpHelpers.sendResponse(response, data, 200);
+        httpHelpers.sendResponse(response, data, 200, headers);
       });
     }
   ,
@@ -47,10 +45,15 @@ var actions = {
     if (pathname === '/') {
       httpHelpers.collectData(request, function(data){
         var dataParsed = querystring.parse(data);
-        dataParsed = dataParsed.url;
-        httpHelpers.appendToFile(archive.paths.list, dataParsed + '\n', function() {
-          archive.addUrlToList(request._postData.url);
-          httpHelpers.sendResponse(response, 'DONE', 302);
+        var url = dataParsed.url;
+        httpHelpers.appendToFile(archive.paths.list, url + '\n', function() {
+
+          archive.addUrlToList(url);
+          var redirect = "./loading.html";
+          var redirectHeader = {
+            'Location': redirect
+          };
+          httpHelpers.sendResponse(response, 'DONE', 302, redirectHeader);
         });
       });
     }
