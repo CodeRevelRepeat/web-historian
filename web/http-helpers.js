@@ -2,7 +2,7 @@ var path = require('path');
 var fs = require('fs');
 var archive = require('../helpers/archive-helpers');
 
-exports.headers = headers = {
+var headers = exports.headers = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",
@@ -31,6 +31,8 @@ exports.serveAssets = function(res, asset, callback) {
 
 exports.sendResponse = sendResponse = function(response, data, statusCode){
   statusCode = statusCode || 200;
+  console.log('current data:', data);
+  console.log('current headers:', headers);
   response.writeHead(statusCode, headers);
   response.end(data);
 };

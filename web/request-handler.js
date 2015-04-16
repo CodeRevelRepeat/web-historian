@@ -5,7 +5,11 @@ var urlParser = require('url');
 var querystring = require('querystring');
 
 // require more modules/folders here!
-
+var mimeTypes = {
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'text/js'
+};
 
 var actions = {
   'GET': function(request, response){
@@ -14,10 +18,10 @@ var actions = {
 
       if(pathname === '/' || pathname === "/index.html" ||
         pathname === '/loading.html' || pathname === '/styles.css'){
-          if(pathname === '/'){
-            pathname = '/index.html';
-          }
-          baseFolder = archive.paths['siteAssets'];
+        if(pathname === '/'){
+          pathname = '/index.html';
+        }
+        baseFolder = archive.paths['siteAssets'];
 
       }
       // else if (archive.isUrlInList(pathname.slice(1))) {
@@ -28,7 +32,12 @@ var actions = {
       }
 
       httpHelpers.serveAssets(response, baseFolder + pathname, function(data){
-
+        console.log('in callback of serveAssets');
+        console.log('pathname:', pathname);
+        if (mimeTypes[path.extname(pathname)]) {
+          console.log('found mimeType');
+          httpHelpers.headers['Content-Type'] = mimeTypes[path.extname(pathname)];
+        }
         httpHelpers.sendResponse(response, data, 200);
       });
     }
