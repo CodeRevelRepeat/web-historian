@@ -41,13 +41,12 @@ exports.collectData = function(request, callback){
     data += chunk;
   });
   request.on('end', function(){
-    //Left off here.  need to fix.
-    callback.call(this, data);
+    callback(data);
   });
 };
 
 exports.appendToFile = function(filePath, data, callback) {
-  fs.appendFile(filePath, data + '\n', callback);
+  fs.appendFile(filePath, data, callback);
 };
 
 

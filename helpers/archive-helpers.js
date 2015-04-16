@@ -27,15 +27,14 @@ exports.initialize = function(pathsObj){
 //
 var urlList = exports.urlList = [];
 
-exports.readListOfUrls = function(){
-  console.log('in readListOfUrls');
+exports.readListOfUrls = function(callback){
   fs.readFile(paths.list, 'utf8', function(err, data) {
     if(err) {
-      console.log('file not found');
       throw err;
     }
-    console.log('DATA:',data);
     urlList = data.toString().split("\n");
+    //callback function allows us to manipulate urlList
+    callback(urlList);
   });
 };
 

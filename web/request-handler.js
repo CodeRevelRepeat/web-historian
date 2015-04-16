@@ -2,6 +2,7 @@ var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers');
 var urlParser = require('url');
+var querystring = require('querystring');
 
 // require more modules/folders here!
 
@@ -36,9 +37,10 @@ var actions = {
     var pathname = urlParser.parse(request.url).pathname;
     if (pathname === '/') {
       httpHelpers.collectData(request, function(data){
-        archive.appendToFile(archive.paths.list, data, function() {
+        var dataParsed = querystring.parse(data);
+        dataParsed = dataParsed.url;
+        httpHelpers.appendToFile(archive.paths.list, dataParsed + '\n', function() {
           archive.addUrlToList(request._postData.url);
-          console.log('urlList',archive.urlList);
           httpHelpers.sendResponse(response, 'DONE', 302);
         });
       });
