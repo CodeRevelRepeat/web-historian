@@ -47,10 +47,23 @@ exports.addUrlToList = function(url){
   urlList.push(url);
 };
 
-exports.isURLArchived = function(url){
-  console.log('in isURLArchived with url:', url);
-  return fs.existsSync(paths.archivedSites + '/' + url);
+// //synch version
+// exports.isURLArchived = function(url){
+//   console.log('in isURLArchived with url:', url);
+//   return fs.existsSync(paths.archivedSites + '/' + url);
+// };
+
+
+//refactor to asynch
+exports.isURLArchived = function(url, callback){
+
+  fs.exists(paths.archivedSites + '/' + url, function(exists){
+    callback(exists);
+  });
 };
+
+
+
 
 exports.downloadUrls = function(url){
   http_request.get({

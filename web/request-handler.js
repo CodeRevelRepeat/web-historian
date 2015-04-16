@@ -46,13 +46,28 @@ var actions = {
 
           archive.addUrlToList(url);
           var redirect = "./loading.html";
-          if(archive.isURLArchived(url)){
-            redirect =  '../archives/sites/' + url;
-          }
+
+          //synch
+          // if(archive.isURLArchived(url)){
+          //   redirect =  '../archives/sites/' + url;
+          // }
+
+         //refactor to asynch:
+         //
+
           var redirectHeader = {
             'Location': redirect
           };
-          httpHelpers.sendResponse(response, 'DONE', 302, redirectHeader);
+          archive.isURLArchived(url, function(exists){
+            if(exists){
+              redirect =  '../archives/sites/' + url;
+            }
+
+            httpHelpers.sendResponse(response, 'DONE', 302, redirectHeader);
+          });
+
+
+
         });
       });
     }
