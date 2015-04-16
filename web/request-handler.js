@@ -10,23 +10,28 @@ var actions = {
   'GET': function(request, response){
       var pathname = urlParser.parse(request.url).pathname;
       var baseFolder = '';
-      archive.readListOfUrls();
-      console.log('pathname', pathname);
-      console.log('archive.isUrlInList',archive.isUrlInList(pathname.slice(1)));
-      console.log('url list', archive.urlList);
 
-      if(pathname === '/'){
-        baseFolder = archive.paths['siteAssets'];
-        pathname = '/index.html';
-      } else if (archive.isUrlInList(pathname.slice(1))) {
-        baseFolder = archive.paths.archivedSites;
+      console.log('requesting index');
+      if(pathname === '/' || pathname === "/index.html" ||
+        pathname === '/loading.html' || pathname === 'styles.css'){
+          if(pathname === '/'){
+            pathname = '/index.html';
+          }
+          baseFolder = archive.paths['siteAssets'];
+
       }
-      console.log('baseFolder', baseFolder);
+      // else if (archive.isUrlInList(pathname.slice(1))) {
+      //   baseFolder = archive.paths.archivedSites;
+      // }
+      else {
+        baseFolder = archive.paths['archivedSites'];
+      }
+
       httpHelpers.serveAssets(response, baseFolder + pathname, function(data){
 
-      httpHelpers.sendResponse(response, data, 200);
-    });
-  }
+        httpHelpers.sendResponse(response, data, 200);
+      });
+    }
   // ,
   // 'POST': function(request, response){
   //   utils.collectData(request, function(message){
@@ -45,7 +50,6 @@ var actions = {
 
 
 exports.handleRequest = function (req, res) {
-
   var action = actions[req.method];
   if( action ){
     action(req, res);

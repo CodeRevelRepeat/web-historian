@@ -12,13 +12,11 @@ exports.headers = headers = {
 
 exports.serveAssets = function(res, asset, callback) {
 
-
   fs.readFile(asset, function (err, data) {
     if (err){
       sendResponse(res, undefined, 404); //come back later
       return;
     }
-    // console.log(data);
     callback(data);
   });
 

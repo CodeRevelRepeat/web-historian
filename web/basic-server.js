@@ -9,12 +9,10 @@ var httpHelpers = require('./http-helpers');
 initialize();
 
 
-
 var routes = {
-  '/': handler.requestHandler
+  "/" : handler.handleRequest
   // ...
 };
-
 
 
 
