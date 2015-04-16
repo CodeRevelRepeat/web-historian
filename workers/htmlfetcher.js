@@ -4,4 +4,8 @@ var archive = require('../helpers/archive-helpers');
 // to actually download the urls you want to download.
 
 
-archive.downloadUrls('www.google.com');
+archive.readListOfUrls(function(urls){
+  for(var i=0; i< urls.length; i++){
+    archive.downloadUrls(urls[i]);
+  }
+});

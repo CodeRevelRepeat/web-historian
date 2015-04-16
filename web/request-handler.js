@@ -47,21 +47,14 @@ var actions = {
           archive.addUrlToList(url);
           var redirect = "./loading.html";
 
-          //synch
-          // if(archive.isURLArchived(url)){
-          //   redirect =  '../archives/sites/' + url;
-          // }
-
-         //refactor to asynch:
-         //
-
-          var redirectHeader = {
-            'Location': redirect
-          };
           archive.isURLArchived(url, function(exists){
             if(exists){
               redirect =  '../archives/sites/' + url;
             }
+
+            var redirectHeader = {
+             Location: redirect
+            };
 
             httpHelpers.sendResponse(response, 'DONE', 302, redirectHeader);
           });
